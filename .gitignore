@@ -1,0 +1,8 @@
+.classpath
+.idea
+target
+.idea/*
+.idea/aws.xml
+.idea/vcs.xml
+.factorypath
+.settings/
