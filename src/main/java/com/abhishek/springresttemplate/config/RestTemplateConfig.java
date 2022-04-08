@@ -36,45 +36,4 @@ public class RestTemplateConfig {
 
         return RestTemplateFactory.restTemplate(httpClientConfig, meterRegistry, Boolean.FALSE);
     }
-
-    @Bean
-    @Qualifier("amsServiceRestTemplate")
-    public RestTemplate amsServiceRestTemplate(MeterRegistry meterRegistry,
-                                               @Value("${rest.template.connection.timeOut}") int connectionTimeOut,
-                                               @Value("${rest.template.request.timeOut}") int requestTimeOut,
-                                               @Value("${rest.template.socket.timeOut}") int socketTimeOut) {
-        HttpClientConfig httpClientConfig = new HttpClientConfig.Builder()
-                .setConnectionTimeOut(connectionTimeOut)
-                .setRequestTimeOut(requestTimeOut)
-                .setSocketTimeOut(socketTimeOut)
-                .setMaxTotal(60)
-                .setMaxPerRoute(30)
-                .setRequestInterceptors(List.of(new RequestResponseLoggingInterceptor()))
-                .build();
-
-        return RestTemplateFactory.restTemplate(httpClientConfig, meterRegistry, Boolean.FALSE);
-    }
-
-    @Bean
-    @Qualifier("criteoRetailMediaRestTemplate")
-    public RestTemplate criteoRetailMediaRestTemplate(MeterRegistry meterRegistry,
-                                                      OAuth2Config oAuth2Config,
-                                                      CachingUntilExpiryCriteoOAuth2TokenService cachingUntilExpiryCriteoOAuth2TokenService,
-                                                      @Value("${criteo.retailmedia.connection.timeOutInMillis}") int connectionTimeOut,
-                                                      @Value("${criteo.retailmedia.request.timeOutInMillis}") int requestTimeOut,
-                                                      @Value("${criteo.retailmedia.socket.timeOutInMillis}") int socketTimeOut,
-                                                      @Value("${criteo.retailmedia.retry.interval.timeOutInMillis}") int retryInterval,
-                                                      @Value("${criteo.retailmedia.retry.count}") int retryCount) {
-        HttpClientConfig httpClientConfig = new HttpClientConfig.Builder()
-                .setConnectionTimeOut(connectionTimeOut)
-                .setRequestTimeOut(requestTimeOut)
-                .setSocketTimeOut(socketTimeOut)
-                .setRetryHandler(new DefaultHttpRequestRetryHandler(retryCount, true))
-                .setRequestInterceptors(List.of(
-                        new RequestResponseLoggingInterceptor(),
-                        new CriteoOAuth2TokenInterceptor(cachingUntilExpiryCriteoOAuth2TokenService, oAuth2Config)))
-                .build();
-
-        return RestTemplateFactory.restTemplate(httpClientConfig, meterRegistry, Boolean.TRUE);
-    }
 }
