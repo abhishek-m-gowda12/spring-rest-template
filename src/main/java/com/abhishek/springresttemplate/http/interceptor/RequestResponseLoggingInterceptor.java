@@ -1,4 +1,4 @@
-package com.abhishek.springresttemplate.config;
+package com.abhishek.springresttemplate.http.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
