@@ -1,15 +1,10 @@
-package com.abhishek.springresttemplate.config;
+package com.abhishek.springresttemplate.http.config;
 
-import com.intentwise.criteo.httpclient.config.CustomizedResponseErrorHandler;
-import com.intentwise.criteo.httpclient.metrics.ParamsStrippedRestTemplateExchangeTagsProvider;
-import io.micrometer.core.instrument.MeterRegistry;
+import com.abhishek.springresttemplate.http.CustomizedResponseErrorHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.springframework.boot.actuate.metrics.AutoTimer;
-import org.springframework.boot.actuate.metrics.web.client.MetricsRestTemplateCustomizer;
-import org.springframework.boot.actuate.metrics.web.client.RestTemplateExchangeTagsProvider;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
@@ -31,16 +26,11 @@ import static java.util.Optional.ofNullable;
  * for the {@code RestTemplate} instance.
  */
 public class RestTemplateFactory {
-    private static final RestTemplateExchangeTagsProvider TAGS_PROVIDER = new ParamsStrippedRestTemplateExchangeTagsProvider();
-    private static final String EXTERNAL_HTTP_METRIC_NAME = "http.client.requests";
 
-    public static RestTemplate restTemplate(HttpClientConfig httpClientConfig, MeterRegistry meterRegistry, boolean isCustomResponseHandlerRequired) {
-        MetricsRestTemplateCustomizer metricsRestTemplateCustomizer = new MetricsRestTemplateCustomizer(meterRegistry,
-                TAGS_PROVIDER, EXTERNAL_HTTP_METRIC_NAME, AutoTimer.ENABLED);
+    public static RestTemplate restTemplate(HttpClientConfig httpClientConfig, boolean isCustomResponseHandlerRequired) {
 
         RestTemplateBuilder builder = new RestTemplateBuilder()
-                .requestFactory(() -> clientHttpRequestFactory(httpClientConfig))
-                .customizers(metricsRestTemplateCustomizer);
+                .requestFactory(() -> clientHttpRequestFactory(httpClientConfig));
 
         if (isCustomResponseHandlerRequired) {
             builder = builder.errorHandler(new CustomizedResponseErrorHandler());

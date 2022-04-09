@@ -1,18 +1,18 @@
 package com.abhishek.springresttemplate.service;
 
 import com.abhishek.springresttemplate.dto.Employee;
-import com.abhishek.springresttemplate.util.HttpClient;
+import com.abhishek.springresttemplate.util.StudentHttpService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentService {
-    private final HttpClient httpClient;
+    private final StudentHttpService studentHttpService;
 
-    public StudentService(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    public StudentService(StudentHttpService studentHttpService) {
+        this.studentHttpService = studentHttpService;
     }
 
     public Employee getStudent() {
-        return httpClient.getStudent();
+        return studentHttpService.getStudent();
     }
 }

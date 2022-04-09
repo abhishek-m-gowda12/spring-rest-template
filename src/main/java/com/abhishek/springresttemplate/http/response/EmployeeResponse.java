@@ -1,5 +1,6 @@
-package com.abhishek.springresttemplate.dto;
+package com.abhishek.springresttemplate.http.response;
 
+import com.abhishek.springresttemplate.dto.Employee;
 import lombok.Data;
 
 @Data
